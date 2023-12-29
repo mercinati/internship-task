@@ -5,13 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="stopwatch.css">
     <style>
-        body {
-             background-image: url('stopwatch.jpg');
+         body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url('stopwatch.jpg');
     /* Adjust background size and properties */
     background-size: cover; /* or 'contain' based on your preference */
     background-repeat: no-repeat;
     background-attachment: fixed;
-        }
+}
+
+.stopwatch {
+    text-align: center;
+    color: white;
+}
+
+.display {
+    font-size: 2em;
+    margin-bottom: 10px;
+    
+}
+
+.control {
+    font-size: 1em;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.menu-bar {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 1.5em;
+    margin-left:30px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav li {
+    margin-right: 40px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    transition: color 0.3s;
+    display: inline-block;
+}
+
+nav a:hover {
+    color: #ddd;
+}
+
+
     </style>
     <title>Stopwatch</title>
 </head>
@@ -35,7 +103,56 @@
         <button class="control" id="reset" onclick="reset()">Reset</button>
     </div>
 
-    <script src="stopwatch.js"></script>
+    <script>
+        let timer;
+let isRunning = false;
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
+
+function startStop() {
+    if (isRunning) {
+        clearInterval(timer);
+        document.getElementById("startStop").innerHTML = "Start";
+    } else {
+        timer = setInterval(updateDisplay, 1000);
+        document.getElementById("startStop").innerHTML = "Stop";
+    }
+    isRunning = !isRunning;
+}
+
+function reset() {
+    clearInterval(timer);
+    isRunning = false;
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    updateDisplay();
+    document.getElementById("startStop").innerHTML = "Start";
+}
+
+function updateDisplay() {
+    seconds++;
+
+    if (seconds === 60) {
+        seconds = 0;
+        minutes++;
+
+        if (minutes === 60) {
+            minutes = 0;
+            hours++;
+        }
+    }
+
+    const display = document.getElementById("display");
+    display.textContent = formatTime(hours) + ":" + formatTime(minutes) + ":" + formatTime(seconds);
+}
+
+function formatTime(time) {
+    return time < 10 ? "0" + time : time;
+}
+
+    </script>
 </body>
 </html>
 
